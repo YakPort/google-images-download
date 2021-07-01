@@ -719,9 +719,14 @@ class googleimagesdownload:
     def download_image(self, image_url, image_format, main_directory, dir_name, count, print_urls, socket_timeout,
                        prefix, print_size, no_numbering, no_download, save_source, img_src, silent_mode, thumbnail_only,
                        format, ignore_urls):
+        import csv
+        # TODO: redirect print to file output
         if not silent_mode:
             if print_urls or no_download:
                 print("Image URL: " + image_url)
+                with open('image_urls.txt', 'a') as f:
+                    f.write(image_url + '\n')
+
         if ignore_urls:
             if any(url in image_url for url in ignore_urls.split(',')):
                 return "fail", "Image ignored due to 'ignore url' parameter", None, image_url
@@ -878,7 +883,7 @@ class googleimagesdownload:
                 break
             #code added here to attempt to implement offset correctly
             #was "count < int(arguments['offset'])" in hardikvasa code, this seems
-            # to be contrary to the implementation details. 
+            # to be contrary to the implementation details.
             elif arguments['offset'] and count <= int(arguments['offset']):
                     count += 1
                     #page = page[end_content:]
